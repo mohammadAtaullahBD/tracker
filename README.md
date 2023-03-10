@@ -1,23 +1,32 @@
-# tracker
+# Create a flutter project
+- flutter create --org com.ipsitasoft app_name
+# Go to project diroctory
+- cd app_name
 
-A new Flutter project.
+# Add this four dependency
+- flutter pub add firebase_core
+- flutter pub add firebase_auth
+- flutter pub add cloud_firestore
+- flutter pub add firebase_analytics
+
+# Active flutterfire_cli if you not done yet!
+- dart pub global activate flutterfire_cli
+# Then update your path
+- vim ~/.zshrc => export PATH="$PATH":"$HOME/.pub-cache/bin"
+
+# install firebase for terminal if you not done yet!
+- npm install -g firebase-tools
+# Then login with firebase
+- firebase login
+
+# Configure your project to get started with firebase
+- flutterfire configure
 
 ## Getting Started
 
 This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-
-
-
-git remote add origin git@github.com:mohammadAtaullahBD/tracker.git
-git branch -M main
-git push -u origin main
+# For pull request
+- git remote add origin git@github.com:mohammadAtaullahBD/tracker.git
+- git branch -M main
+- git push -u origin main
