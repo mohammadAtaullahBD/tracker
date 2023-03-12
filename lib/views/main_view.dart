@@ -1,18 +1,29 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:tracker/constants/routes.dart';
 import 'package:tracker/enums/menu_action.dart';
 import 'package:tracker/services/auth/auth_service.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class NotesView extends StatefulWidget {
-  const NotesView({Key? key}) : super(key: key);
+class MainView extends StatefulWidget {
+  const MainView({super.key});
 
   @override
-  _NotesViewState createState() => _NotesViewState();
+  State<MainView> createState() => _MainViewState();
 }
 
-class _NotesViewState extends State<NotesView> {
+class _MainViewState extends State<MainView> {
+  final Completer<GoogleMapController> _mapControlar =
+      Completer<GoogleMapController>();
+  late GoogleMapController newMapControlar;
+  static const CameraPosition _kLake = CameraPosition(
+      bearing: 192.8334901395799,
+      target: LatLng(37.43296265331129, -122.08832357078792),
+      tilt: 59.440717697143555,
+      zoom: 19.151926040649414);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +55,19 @@ class _NotesViewState extends State<NotesView> {
           )
         ],
       ),
-      body: const Text('Hello world'),
+      body: Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: _kLake,
+            mapType: MapType.normal,
+            myLocationButtonEnabled: true,
+            onMapCreated: ((GoogleMapController controller) {
+              _mapControlar.complete(controller);
+              newMapControlar = controller;
+            }),
+          )
+        ],
+      ),
     );
   }
 }

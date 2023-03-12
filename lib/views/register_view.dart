@@ -1,7 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/constants/routes.dart';
+import 'package:tracker/main.dart';
 import 'package:tracker/services/auth/auth_exceptions.dart';
 import 'package:tracker/services/auth/auth_service.dart';
 import 'package:tracker/utilities/show_error_dialog.dart';
@@ -14,11 +16,15 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
+  late final TextEditingController _name;
+  late final TextEditingController _phone;
   late final TextEditingController _email;
   late final TextEditingController _password;
 
   @override
   void initState() {
+    _name = TextEditingController();
+    _phone = TextEditingController();
     _email = TextEditingController();
     _password = TextEditingController();
     super.initState();
@@ -26,6 +32,8 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   void dispose() {
+    _name.dispose();
+    _phone.dispose();
     _email.dispose();
     _password.dispose();
     super.dispose();
@@ -61,11 +69,21 @@ class _RegisterViewState extends State<RegisterView> {
             onPressed: () async {
               final email = _email.text;
               final password = _password.text;
+              Map userData = {
+                "name": _name.text,
+                "phone": _phone.text,
+                "email": _email.text,
+              };
+
               try {
+                userRef
+                    .child(FirebaseAuth.instance.currentUser!.uid)
+                    .set(userData);
                 await AuthService.firebase().createUser(
                   email: email,
                   password: password,
                 );
+                // AuthService.firebase().currentUser.
                 AuthService.firebase().sendEmailVerification();
                 Navigator.of(context).pushNamed(verifyEmailRoute);
               } on WeakPasswordAuthException {
